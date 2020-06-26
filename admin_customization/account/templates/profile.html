@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profile</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<!-- <script src="/static/js/custom.js" type="text/javascript"></script> -->
+</head>
+<body>
+<div class="container">
+	<h1>All Users</h1>
+	<br><br>
+	<div class="dropdown">
+	<label for="cars">All users</label>
+
+		<select name = "user">
+			<option selected="true" disabled="disabled">All users</option>
+			{% for user in users_list %}
+				<option value="{{user.id}}">{{user.email}}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<br><br>
+		{% if users_list %}
+           <div class="table">
+           <form method= 'post'> 
+           {% csrf_token %}
+              <table border="1px" class="table table-bordered"">
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Name</th>
+                    <th>Email Id</th>
+                    <th></th>
+                </tr>
+                {% for user in users_list %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.email}}</td>
+                {% if user.is_superuser %}
+                <td></td>
+                {% else %}
+                    <td><button class='delete' name ='delete' value ='{{user.id}}'>Delete</button></td>
+                {% endif %}
+               </tr>
+           		{% endfor %}
+              </table>
+              </form>
+           </div>
+          <div class="pagination">
+             <span class="step-links">
+             {% if users_list.has_previous %}
+             <a href="/profile/?page={{ users_list.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">previous</a>
+             {% endif %}
+             <span class="current">
+             Page {{ users_list.number }} of {{ users_list.paginator.num_pages }}.
+             </span>
+             {% if users_list.has_next %}
+             <a class="pagination_next" href="/profile/?page={{ users_list.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">next</a>
+             {% endif %}
+             </span>
+          </div>
+       {% else %}
+       		<h3>Oopppss!!!  There is no data available</h3>
+       {% endif %}
+</div>
+<a href="/logout">Logout</a>
+
+</body>
+</html>

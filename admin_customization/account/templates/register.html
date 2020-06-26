@@ -1,0 +1,29 @@
+{% load static %} 
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Registration</title>
+      <link rel="stylesheet" type="text/css" href="/static/css/custom.css">
+   </head>
+   <body>
+      <div class="login-page">
+       {% if messages %}
+                <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+         {% endif %}
+         <div class="form">
+            <form class="register-form" method="post">
+         	{% csrf_token %}
+         		<input type="email" placeholder="Email address" name="email"/>
+               <input type="text" placeholder="name" name="username"/>
+               <input type="password" placeholder="password" name="password"/>
+               <button>create</button>
+               <p class="message">Already registered? <a href="/login">Sign In</a></p>
+            </form>
+         </div>
+      </div>
+   </body>
+</html>
